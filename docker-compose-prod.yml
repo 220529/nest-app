@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 16000:27017
+    volumes:
+      - ./.docker-volumes/mongo/data:/data/db
+      - ./mongo-entrypoint/:/docker-entrypoint-initdb.d/
+    env_file:
+      - .env
+    networks:
+      - nest-network
+
+  nest:
+    image: registry.cn-beijing.aliyuncs.com/kaixinliu/nest-app:{{IMAGE_TAG}}
+    depends_on:
+      - mongo
+    ports:
+      - 16800:16800
+    networks:
+      - nest-network
+
+networks:
+  nest-network:
