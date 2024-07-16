@@ -7,5 +7,5 @@ RUN npm i
 # 构建项目
 COPY . /nest-app
 RUN npm run build
-EXPOSE 3000
+EXPOSE 16800
 CMD npm run start:prod
