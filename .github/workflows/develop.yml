@@ -2,6 +2,9 @@
 
 name: deploy nest-app
 
+env:
+  APP_NAME: nest-app
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
@@ -48,8 +51,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           echo github.sha: ${{github.sha}}
-          docker build -t registry.cn-beijing.aliyuncs.com/kaixinliu/nest-app:$IMAGE_TAG .
-          docker push registry.cn-beijing.aliyuncs.com/kaixinliu/nest-app:$IMAGE_TAG
+          docker build -t registry.cn-beijing.aliyuncs.com/kaixinliu/${{ env.APP_NAME }}:$IMAGE_TAG .
+          docker push registry.cn-beijing.aliyuncs.com/kaixinliu/${{ env.APP_NAME }}:$IMAGE_TAG
 
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v3
@@ -61,9 +64,9 @@ jobs:
 
       - name: 创建配置文件夹
         run: |
-          mkdir nest-app
-          cp .env docker-compose-prod.yml nest-app
-          cp -r mongo-entrypoint nest-app
+          mkdir ${{ env.APP_NAME }}
+          cp .env docker-compose-prod.yml ${{ env.APP_NAME }}
+          cp -r mongo-entrypoint ${{ env.APP_NAME }}
 
       - name: 将配置文件夹copy到ssh
         uses: appleboy/scp-action@v0.1.7
@@ -71,7 +74,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: nest-app
+          source: ${{ env.APP_NAME }}
           target: /app
 
       - name: 登录ssh，部署镜像
@@ -82,6 +85,6 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script_stop: true
           script: |
-            cd /app/nest-app/
+            cd /app/${{ env.APP_NAME }}/
             docker compose -f docker-compose-prod.yml down
             docker compose -f docker-compose-prod.yml up -d
