@@ -66,7 +66,7 @@ jobs:
         run: |
           mkdir ${{ env.APP_NAME }}
           cp .env docker-compose-prod.yml ${{ env.APP_NAME }}
-          cp -r mongo-entrypoint ${{ env.APP_NAME }}
+          cp -r mongo-entrypoint public ${{ env.APP_NAME }}
 
       - name: 将配置文件夹copy到ssh
         uses: appleboy/scp-action@v0.1.7
