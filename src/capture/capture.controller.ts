@@ -12,6 +12,7 @@ export class CaptureController {
 
   @Get('collect.gif')
   captureError(@Query() query: any, @Res() res: Response) {
+    console.log('collect.gif', query);
     this.captureService.create(query);
     const gifPath = path.join(process.cwd(), 'public', 'collect.gif'); // 假设已存在
     const gifBuffer = fs.readFileSync(gifPath);
