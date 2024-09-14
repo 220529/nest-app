@@ -8,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CatsModule } from './cat/cats.module';
 import { CaptureModule } from './capture/capture.module';
+import { MonitorModule } from './monitor/monitor.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { CaptureModule } from './capture/capture.module';
     }),
     CatsModule,
     CaptureModule,
+    MonitorModule,
   ],
   controllers: [],
   providers: [],
