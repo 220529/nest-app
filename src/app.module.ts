@@ -1,14 +1,10 @@
-import {
-  Module,
-  NestModule,
-  MiddlewareConsumer,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CatsModule } from './cat/cats.module';
 import { CaptureModule } from './capture/capture.module';
 import { MonitorModule } from './monitor/monitor.module';
+import { OssModule } from './oss/oss.module';
 
 @Module({
   imports: [
@@ -34,6 +30,7 @@ import { MonitorModule } from './monitor/monitor.module';
     CatsModule,
     CaptureModule,
     MonitorModule,
+    OssModule,
   ],
   controllers: [],
   providers: [],
