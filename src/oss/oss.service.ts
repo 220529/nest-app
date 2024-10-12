@@ -29,7 +29,7 @@ export class OssService {
     // 检查文件类型
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!allowedTypes.includes(mimetype)) {
-      throw new BadRequestException('只允许上传 JPEG、PNG 或 GIF 图像文件');
+      // throw new BadRequestException('只允许上传 JPEG、PNG 或 GIF 图像文件');
     }
 
     // 检查文件大小
@@ -41,8 +41,9 @@ export class OssService {
       );
     }
     // const fileName = `${Date.now()}-${originalname}`;
-    const fileName = this.getRandomFileName(file.mimetype.split('/')[1]);
-    console.log('fileName', fileName);
+    const fileName = this.getRandomFileName(
+      file.mimetype.split('/')[1]?.replace('javascript', 'js'),
+    );
     // 上传文件到OSS
     const result = await this.ossClient.put(fileName, buffer);
     // 返回文件的URL
