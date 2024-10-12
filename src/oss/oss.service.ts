@@ -20,7 +20,7 @@ export class OssService {
       accessKeySecret,
       bucket,
       region,
-      roleArn,
+      // roleArn,
     });
   }
 
@@ -46,6 +46,7 @@ export class OssService {
     );
     // 上传文件到OSS
     const result = await this.ossClient.put(fileName, buffer);
+    // console.log('result', result);
     // 返回文件的URL
     return {
       fileName: fileName,
