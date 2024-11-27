@@ -5,6 +5,9 @@ import { CatsModule } from './cat/cats.module';
 import { CaptureModule } from './capture/capture.module';
 import { MonitorModule } from './monitor/monitor.module';
 import { OssModule } from './oss/oss.module';
+import { TaroModule } from './taro/taro.module';
+import { AuthModule } from '@/auth/auth.module';
+import { UserModule } from '@/user/user.module';
 
 @Module({
   imports: [
@@ -31,6 +34,9 @@ import { OssModule } from './oss/oss.module';
     CaptureModule,
     MonitorModule,
     OssModule,
+    TaroModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
