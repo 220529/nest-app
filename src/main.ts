@@ -13,6 +13,9 @@ async function bootstrap() {
   // 全局路由前缀
   // app.setGlobalPrefix('api');
 
+  // 启用默认的 CORS 配置
+  app.enableCors();
+
   const options = new DocumentBuilder().build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

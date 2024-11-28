@@ -8,6 +8,7 @@ import { OssModule } from './oss/oss.module';
 import { TaroModule } from './taro/taro.module';
 import { AuthModule } from '@/auth/auth.module';
 import { UserModule } from '@/user/user.module';
+import { MockModule } from '@/mock/mock.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UserModule } from '@/user/user.module';
     TaroModule,
     AuthModule,
     UserModule,
+    MockModule,
   ],
   controllers: [],
   providers: [],
