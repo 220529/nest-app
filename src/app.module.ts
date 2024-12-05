@@ -17,27 +17,27 @@ import { MockModule } from '@/mock/mock.module';
       envFilePath:
         process.env.NODE_ENV === 'production' ? '.env' : '.env.local',
     }),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const config = {
-          user: configService.get('MONGO_INITDB_ROOT_USERNAME'),
-          pass: configService.get('MONGO_INITDB_ROOT_PASSWORD'),
-          dbName: configService.get('MONGO_INITDB_DATABASE'),
-          uri: `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`,
-        };
-        console.log('MongoDB: ', config);
-        return config;
-      },
-    }),
-    CatsModule,
-    CaptureModule,
-    MonitorModule,
-    OssModule,
-    TaroModule,
-    AuthModule,
-    UserModule,
+    // MongooseModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService) => {
+    //     const config = {
+    //       user: configService.get('MONGO_INITDB_ROOT_USERNAME'),
+    //       pass: configService.get('MONGO_INITDB_ROOT_PASSWORD'),
+    //       dbName: configService.get('MONGO_INITDB_DATABASE'),
+    //       uri: `mongodb://${configService.get('MONGO_HOST')}:${configService.get('MONGO_PORT')}`,
+    //     };
+    //     console.log('MongoDB: ', config);
+    //     return config;
+    //   },
+    // }),
+    // CatsModule,
+    // CaptureModule,
+    // MonitorModule,
+    // OssModule,
+    // TaroModule,
+    // AuthModule,
+    // UserModule,
     MockModule,
   ],
   controllers: [],
