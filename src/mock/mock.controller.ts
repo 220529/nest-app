@@ -146,6 +146,59 @@ export class MockController {
     };
   }
 
+  @Get('suppliers')
+  getSuppliersData(
+    @Query('page') page: number = 1,
+    @Query('size') size: number = 10,
+  ) {
+    // 总数据量
+    const totalItems = 12;
+
+    // 使用Mock.js动态生成数据
+    const items = Mock.mock({
+      [`data|${totalItems}`]: [
+        {
+          // 序号
+          'serialNumber': '@increment(1)',
+          // 配送单号
+          'deliveryOrderNumber': '@string("number", 12)',
+          // 结算单号
+          'settlementOrderNumber': '@string("number", 12)',
+          // 支出单号
+          'expenditureOrderNumber': '@string("number", 12)',
+          // 收获审核
+          'examine': '@cname()',
+          // 收款金额（元）
+          'receiptAmount': '@float(0, 10000, 2, 2)',
+          // 支出金额（元）
+          'deductionAmount': '@float(0, 10000, 2, 2)',        
+          'expenditureAmount': '@float(0, 10000, 2, 2)',        
+          // 收款状态
+          'receiptStatus': '@pick(["已收款", "未收款"])',
+          // 支出状态
+          'expenditureStatus': '@pick(["已支出", "未支出"])',
+          // 供应商
+          'supplier': '@cname()',
+          // 结算单位
+          'settlementUnit': '@cname()'
+        }
+      ]
+    }).data;
+
+    // 分页逻辑
+    const startIndex = (page - 1) * size;
+    const endIndex = startIndex + size;
+    const paginatedItems = items.slice(startIndex, endIndex);
+
+    return {
+      page,
+      size,
+      totalItems,
+      totalPages: Math.ceil(totalItems / size),
+      data: paginatedItems,
+    };
+  }
+
   @Get('launch')
   getOrdersData(
     @Query('page') page: number = 1,
