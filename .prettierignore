@@ -1,0 +1,37 @@
+# 忽略所有 node_modules 目录
+node_modules/
+
+# 忽略构建输出目录
+dist/
+build/
+out/
+.next/
+.nuxt/
+
+# 忽略自动生成的配置文件
+*.local
+.env
+.env.local
+
+# 忽略日志文件
+*.log
+
+# 忽略 IDE/编辑器目录
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 忽略特定文件类型
+*.md
+*.svg
+*.json
+*.lock
+
+# 忽略特定文件
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# 忽略测试快照
+__snapshots__/
