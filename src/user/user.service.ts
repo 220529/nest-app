@@ -1,0 +1,76 @@
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  ConflictException,
+  NotFoundException,
+} from "@nestjs/common";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "@/user/entities/user.entity";
+import { PaginationDto } from "@/dtos/pagination.dto";
+import { CreateUserDto } from "@/user/dto/create-user.dto";
+import { UpdateUserDto } from "@/user/dto/update-user.dto";
+
+@Injectable()
+export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>
+  ) {}
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      // 检查用户名是否已存在
+      const existingUser = await this.userRepository.findOne({
+        where: { username: createUserDto.username },
+      });
+      if (existingUser) {
+        throw new ConflictException("Username already exists");
+      }
+      const user = this.userRepository.create(createUserDto);
+      return await this.userRepository.save(user);
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async findAll(
+    paginationDto: PaginationDto
+  ): Promise<{ rows: User[]; total: number; page: number; limit: number }> {
+    const { page = 1, limit = 10 } = paginationDto;
+    const [rows, total] = await this.userRepository.findAndCount({
+      skip: (page - 1) * limit,
+      relations: [],
+      take: limit,
+      order: { id: "ASC" }, // 可以添加排序
+    });
+    return { rows, total, page, limit };
+  }
+
+  async findOne(id: number) {
+    return await this.userRepository.findOne({ where: { id } });
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    // 检查用户名是否已存在（如果提供了新用户名）
+    if (updateUserDto.username && updateUserDto.username !== user.username) {
+      const existingUser = await this.userRepository.findOne({
+        where: { username: updateUserDto.username },
+      });
+      if (existingUser) {
+        throw new ConflictException("Username already exists");
+      }
+    }
+
+    await this.userRepository.update(id, updateUserDto);
+    return await this.findOne(id);
+  }
+
+  async remove(id: number) {
+    return await this.userRepository.delete(id);
+  }
+}
