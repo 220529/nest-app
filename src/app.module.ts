@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserModule } from "@/user/user.module";
+import { UsersModule } from "@/users/users.module";
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { UserModule } from "@/user/user.module";
         synchronize: true, // 根据实体自动创建数据库表， 生产环境建议关闭
       }),
     }),
-    UserModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],

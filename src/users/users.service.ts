@@ -7,10 +7,10 @@ import {
 } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "@/user/entities/user.entity";
+import { User } from "@/users/entities/user.entity";
 import { PaginationDto } from "@/dtos/pagination.dto";
-import { CreateUserDto } from "@/user/dto/create-user.dto";
-import { UpdateUserDto } from "@/user/dto/update-user.dto";
+import { CreateUserDto } from "@/users/dto/create-user.dto";
+import { UpdateUserDto } from "@/users/dto/update-user.dto";
 
 @Injectable()
 export class UserService {
