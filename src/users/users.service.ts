@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { Repository } from "typeorm";
+import { classToPlain } from "class-transformer";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@/users/entities/user.entity";
 import { PaginationDto } from "@/dtos/pagination.dto";
@@ -13,7 +14,7 @@ import { CreateUserDto } from "@/users/dto/create-user.dto";
 import { UpdateUserDto } from "@/users/dto/update-user.dto";
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>
@@ -47,8 +48,8 @@ export class UserService {
     return { rows, total, page, limit };
   }
 
-  async findOne(id: number) {
-    return await this.userRepository.findOne({ where: { id } });
+  async findOne(params) {
+    return await this.userRepository.findOne({ where: { ...params } });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

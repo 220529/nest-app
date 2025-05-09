@@ -1,5 +1,6 @@
-import { NestFactory } from "@nestjs/core";
+import { NestFactory, Reflector } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { ClassSerializerInterceptor, UseInterceptors } from "@nestjs/common";
 import { AppModule } from "@/app.module";
 import { LoggingInterceptor } from "@/interceptors/logging.interceptor";
 import { TransformInterceptor } from "@/interceptors/transform.interceptor";
@@ -8,6 +9,7 @@ import { HttpExceptionFilter } from "@/filters/http-exception.filter";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector)),
     new LoggingInterceptor(),
     new TransformInterceptor()
   );
