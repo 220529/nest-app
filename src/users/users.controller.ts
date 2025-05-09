@@ -13,6 +13,7 @@ import { User } from "@/users/entities/user.entity";
 import { PaginationDto } from "@/dtos/pagination.dto";
 import { CreateUserDto } from "@/users/dto/create-user.dto";
 import { UpdateUserDto } from "@/users/dto/update-user.dto";
+import { UpdateProfileDto } from "@/users/dto/update-profile.dto";
 
 @Controller("user")
 export class UserController {
@@ -36,6 +37,11 @@ export class UserController {
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
+  }
+
+  @Patch(":id/profile")
+  updateProfile(@Param("id") userId: number, @Body() dto: UpdateProfileDto) {
+    return this.usersService.updateProfile(userId, dto);
   }
 
   @Delete(":id")

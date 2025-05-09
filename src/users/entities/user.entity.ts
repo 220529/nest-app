@@ -1,5 +1,13 @@
 import { Exclude } from "class-transformer";
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+} from "typeorm";
+import { Profile } from "./profile.entity";
 
 @Entity()
 export class User {
@@ -15,4 +23,15 @@ export class User {
 
   @Column({ default: false }) // 设置默认值为 false
   disable?: boolean; // 将 disable 字段声明为可选
+
+  @OneToOne(() => Profile, (profile) => profile.user, {
+    cascade: true, // TypeORM 级联操作
+  })
+  profile: Profile;
+
+  @CreateDateColumn()
+  createTime: Date;
+
+  @UpdateDateColumn()
+  updateTime: Date;
 }
