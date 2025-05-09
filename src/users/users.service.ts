@@ -90,12 +90,7 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async remove(userId: number) {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      relations: ["profile"], // 必须显式加载
-    });
-    if (!user) throw new NotFoundException("User not found");
-    return this.userRepository.remove(user);
+  async delete(userId: number) {
+    return this.userRepository.delete(userId);
   }
 }
