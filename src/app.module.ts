@@ -1,8 +1,9 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UsersModule } from "@/users/users.module";
-import { AuthModule } from './auth/auth.module';
+import { UserModule } from "@/user/user.module";
+import { AuthModule } from "@/auth/auth.module";
+import { WorkModule } from "@/work/work.module";
 
 @Module({
   imports: [
@@ -26,8 +27,9 @@ import { AuthModule } from './auth/auth.module';
         synchronize: true, // 根据实体自动创建数据库表， 生产环境建议关闭
       }),
     }),
-    UsersModule,
+    UserModule,
     AuthModule,
+    WorkModule,
   ],
   controllers: [],
   providers: [],

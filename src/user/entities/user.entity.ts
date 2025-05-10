@@ -6,8 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  OneToMany,
 } from "typeorm";
 import { Profile } from "./profile.entity";
+import { Work } from "@/work/entities/work.entity";
 
 @Entity()
 export class User {
@@ -28,6 +30,11 @@ export class User {
     cascade: true, // TypeORM 级联操作
   })
   profile: Profile;
+
+  @OneToMany(() => Work, (work) => work.user, {
+    cascade: true,
+  })
+  works: Work[];
 
   @CreateDateColumn()
   createTime: Date;

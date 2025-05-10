@@ -8,44 +8,44 @@ import {
   Delete,
   Query,
 } from "@nestjs/common";
-import { UsersService } from "@/users/users.service";
-import { User } from "@/users/entities/user.entity";
+import { UserService } from "@/user/user.service";
+import { User } from "@/user/entities/user.entity";
 import { PaginationDto } from "@/dtos/pagination.dto";
-import { CreateUserDto } from "@/users/dto/create-user.dto";
-import { UpdateUserDto } from "@/users/dto/update-user.dto";
-import { UpdateProfileDto } from "@/users/dto/update-profile.dto";
+import { CreateUserDto } from "@/user/dto/create-user.dto";
+import { UpdateUserDto } from "@/user/dto/update-user.dto";
+import { UpdateProfileDto } from "@/user/dto/update-profile.dto";
 
 @Controller("user")
 export class UserController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.userService.create(createUserDto);
   }
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.usersService.findAll(paginationDto);
+    return this.userService.findAll(paginationDto);
   }
 
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.usersService.findOne({ id: +id });
+    return this.userService.findOne({ id: +id });
   }
 
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.userService.update(+id, updateUserDto);
   }
 
   @Patch(":id/profile")
   updateProfile(@Param("id") userId: number, @Body() dto: UpdateProfileDto) {
-    return this.usersService.updateProfile(userId, dto);
+    return this.userService.updateProfile(userId, dto);
   }
 
   @Delete(":id")
   delete(@Param("id") id: string) {
-    return this.usersService.delete(+id);
+    return this.userService.delete(+id);
   }
 }

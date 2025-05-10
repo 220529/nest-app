@@ -10,7 +10,7 @@ import {
 } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
-import { CreateUserDto } from "@/users/dto/create-user.dto";
+import { CreateUserDto } from "@/user/dto/create-user.dto";
 import { Public } from "@/decorators/public.decorator";
 
 @ApiTags("auth服务")

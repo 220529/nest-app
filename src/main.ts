@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import { ClassSerializerInterceptor, UseInterceptors } from "@nestjs/common";
+import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
 import { AppModule } from "@/app.module";
 import { LoggingInterceptor } from "@/interceptors/logging.interceptor";
 import { TransformInterceptor } from "@/interceptors/transform.interceptor";
@@ -14,6 +14,7 @@ async function bootstrap() {
     new TransformInterceptor()
   );
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe()); // 添加这行
   app.setGlobalPrefix("api");
   // 设置swagger文档
   const config = new DocumentBuilder()
