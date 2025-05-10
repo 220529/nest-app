@@ -5,7 +5,7 @@ import {
   ConflictException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { PaginationDto } from "@/dtos/pagination.dto";
+import { PaginationDto } from "@/common/dto/pagination.dto";
 import { UserService } from "@/user/user.service";
 import { Work } from "@/work/entities/work.entity";
 import { CreateWorkDto } from "./dto/create-work.dto";
@@ -15,7 +15,7 @@ import { UpdateWorkDto } from "./dto/update-work.dto";
 export class WorkService {
   constructor(
     @InjectRepository(Work)
-    private readonly workRepository: Repository<Work>,
+    private readonly workRepo: Repository<Work>,
     private userService: UserService
   ) {}
 
@@ -25,7 +25,7 @@ export class WorkService {
     if (!user) throw new NotFoundException("用户不存在");
 
     // 2. 防重名检查（同用户下不允许重复作品名）
-    const existingWork = await this.workRepository.findOne({
+    const existingWork = await this.workRepo.findOne({
       where: {
         title: createWorkDto.title,
         user: { id: userId },
@@ -37,19 +37,19 @@ export class WorkService {
     }
 
     // 3. 创建作品
-    const work = this.workRepository.create({
+    const work = this.workRepo.create({
       ...createWorkDto,
       user: user,
     });
 
-    return this.workRepository.save(work);
+    return this.workRepo.save(work);
   }
 
   async findAll(
     paginationDto: PaginationDto
   ): Promise<{ rows: Work[]; total: number; page: number; limit: number }> {
     const { page = 1, limit = 10 } = paginationDto;
-    const [rows, total] = await this.workRepository.findAndCount({
+    const [rows, total] = await this.workRepo.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
       order: { id: "ASC" }, // 可以添加排序
@@ -58,7 +58,7 @@ export class WorkService {
   }
 
   async findOne(params) {
-    return await this.workRepository.findOne({
+    return await this.workRepo.findOne({
       where: { ...params },
     });
   }
@@ -73,7 +73,7 @@ export class WorkService {
     if (!user) throw new NotFoundException("用户不存在");
 
     // 2. 获取目标作品
-    const work = await this.workRepository.findOne({
+    const work = await this.workRepo.findOne({
       where: {
         id: workId,
         user: { id: userId },
@@ -83,7 +83,7 @@ export class WorkService {
 
     // 3. 如果尝试修改标题，检查重名
     if (updateWorkDto.title && updateWorkDto.title !== work.title) {
-      const existingWork = await this.workRepository.findOne({
+      const existingWork = await this.workRepo.findOne({
         where: {
           title: updateWorkDto.title,
           user: { id: userId },
@@ -96,11 +96,11 @@ export class WorkService {
     }
 
     // 4. 合并并保存更新
-    const updatedWork = this.workRepository.merge(work, updateWorkDto);
-    return this.workRepository.save(updatedWork);
+    const updatedWork = this.workRepo.merge(work, updateWorkDto);
+    return this.workRepo.save(updatedWork);
   }
 
   delete(workId: number) {
-    return this.workRepository.delete(workId);
+    return this.workRepo.delete(workId);
   }
 }

@@ -9,33 +9,35 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@/user/entities/user.entity";
 import { Profile } from "@/user/entities/profile.entity";
-import { PaginationDto } from "@/dtos/pagination.dto";
+import { PaginationDto } from "@/common/dto/pagination.dto";
 import { CreateUserDto } from "@/user/dto/create-user.dto";
 import { UpdateUserDto } from "@/user/dto/update-user.dto";
 import { UpdateProfileDto } from "@/user/dto/update-profile.dto";
+import { RoleService } from "@/role/role.service";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private userRepo: Repository<User>,
     @InjectRepository(Profile)
-    private profileRepository: Repository<Profile>
+    private profileRepo: Repository<Profile>,
+    private roleService: RoleService
   ) {}
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       // 检查用户名是否已存在
-      const existingUser = await this.userRepository.findOne({
+      const existingUser = await this.userRepo.findOne({
         where: { username: createUserDto.username },
       });
       if (existingUser) {
         throw new ConflictException("Username already exists");
       }
-      const user = this.userRepository.create({
+      const user = this.userRepo.create({
         ...createUserDto,
         profile: {},
       });
-      return await this.userRepository.save(user);
+      return await this.userRepo.save(user);
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -45,9 +47,9 @@ export class UserService {
     paginationDto: PaginationDto
   ): Promise<{ rows: User[]; total: number; page: number; limit: number }> {
     const { page = 1, limit = 10 } = paginationDto;
-    const [rows, total] = await this.userRepository.findAndCount({
+    const [rows, total] = await this.userRepo.findAndCount({
       skip: (page - 1) * limit,
-      relations: ["profile"],
+      relations: ["profile", "works", "roles"],
       take: limit,
       order: { id: "ASC" }, // 可以添加排序
     });
@@ -55,20 +57,20 @@ export class UserService {
   }
 
   async findOne(params) {
-    return await this.userRepository.findOne({
+    return await this.userRepo.findOne({
       where: { ...params },
-      relations: ["profile"],
+      relations: ["profile", "works", "roles"],
     });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepo.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
     // 检查用户名是否已存在（如果提供了新用户名）
     if (updateUserDto.username && updateUserDto.username !== user.username) {
-      const existingUser = await this.userRepository.findOne({
+      const existingUser = await this.userRepo.findOne({
         where: { username: updateUserDto.username },
       });
       if (existingUser) {
@@ -76,7 +78,7 @@ export class UserService {
       }
     }
 
-    await this.userRepository.update(id, updateUserDto);
+    await this.userRepo.update(id, updateUserDto);
     return await this.findOne({ id });
   }
 
@@ -86,11 +88,22 @@ export class UserService {
 
     if (!user) throw new NotFoundException("用户不存在");
 
-    user.profile = this.profileRepository.merge(user.profile, dto);
-    return this.userRepository.save(user);
+    user.profile = this.profileRepo.merge(user.profile, dto);
+    return this.userRepo.save(user);
+  }
+
+  async assignRolesToUser(userId: number, roleIds: number[]) {
+    const user = await this.userRepo.findOneBy({ id: userId });
+    if (!user) throw new NotFoundException(`用户 ${userId} 不存在`);
+
+    // 直接调用RoleService的现有方法
+    const roles = await this.roleService.findByIds(roleIds);
+
+    user.roles = roles;
+    return this.userRepo.save(user);
   }
 
   async delete(userId: number) {
-    return this.userRepository.delete(userId);
+    return this.userRepo.delete(userId);
   }
 }

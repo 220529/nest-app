@@ -1,19 +1,9 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from "typeorm";
+import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
+import { BaseEntity } from "@/common/entities/base.entity";
 import { User } from "@/user/entities/user.entity";
 
 @Entity()
-export class Work {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Work extends BaseEntity {
   @Column()
   title: string;
 
@@ -23,12 +13,6 @@ export class Work {
   @ManyToOne(() => User, (user) => user.works, {
     onDelete: "CASCADE", // 数据库级联删除
   })
-  @JoinColumn()
+  @JoinColumn({ name: "user_id" }) // 外键列
   user: User;
-
-  @CreateDateColumn()
-  createTime: Date;
-
-  @UpdateDateColumn()
-  updateTime: Date; // 自动在save()时更新
 }

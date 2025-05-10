@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Body,
+  Put,
   Patch,
   Param,
   Delete,
@@ -10,10 +11,11 @@ import {
 } from "@nestjs/common";
 import { UserService } from "@/user/user.service";
 import { User } from "@/user/entities/user.entity";
-import { PaginationDto } from "@/dtos/pagination.dto";
+import { PaginationDto } from "@/common/dto/pagination.dto";
 import { CreateUserDto } from "@/user/dto/create-user.dto";
 import { UpdateUserDto } from "@/user/dto/update-user.dto";
 import { UpdateProfileDto } from "@/user/dto/update-profile.dto";
+import { AssignRolesDto } from "./dto/assign-roles.dto";
 
 @Controller("user")
 export class UserController {
@@ -42,6 +44,14 @@ export class UserController {
   @Patch(":id/profile")
   updateProfile(@Param("id") userId: number, @Body() dto: UpdateProfileDto) {
     return this.userService.updateProfile(userId, dto);
+  }
+
+  @Put(":id/roles")
+  async updateUserRoles(
+    @Param("id") userId: string,
+    @Body() dto: AssignRolesDto
+  ) {
+    return this.userService.assignRolesToUser(+userId, dto.roleIds);
   }
 
   @Delete(":id")

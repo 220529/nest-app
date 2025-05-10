@@ -1,19 +1,9 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from "typeorm";
+import { Entity, Column, OneToOne, JoinColumn } from "typeorm";
+import { BaseEntity } from "@/common/entities/base.entity";
 import { User } from "./user.entity";
 
 @Entity()
-export class Profile {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Profile extends BaseEntity {
   @Column({ nullable: true })
   avatar: string;
 
@@ -23,12 +13,6 @@ export class Profile {
   @OneToOne(() => User, (user) => user.profile, {
     onDelete: "CASCADE", // 数据库级联删除
   })
-  @JoinColumn()
+  @JoinColumn({ name: "user_id" }) // 外键列
   user: User;
-
-  @CreateDateColumn()
-  createTime: Date;
-
-  @UpdateDateColumn()
-  updateTime: Date;
 }

@@ -2,20 +2,18 @@ import { Exclude } from "class-transformer";
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   OneToOne,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
+import { BaseEntity } from "@/common/entities/base.entity";
 import { Profile } from "./profile.entity";
 import { Work } from "@/work/entities/work.entity";
+import { Role } from "@/role/entities/role.entity";
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends BaseEntity {
   @Column()
   username: string;
 
@@ -36,9 +34,11 @@ export class User {
   })
   works: Work[];
 
-  @CreateDateColumn()
-  createTime: Date;
-
-  @UpdateDateColumn()
-  updateTime: Date;
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: "user_roles", // 明确指定关联表名
+    joinColumn: { name: "user_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "role_id", referencedColumnName: "id" },
+  })
+  roles: Role[];
 }

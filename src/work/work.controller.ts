@@ -10,7 +10,7 @@ import {
   Request,
   BadRequestException,
 } from "@nestjs/common";
-import { PaginationDto } from "@/dtos/pagination.dto";
+import { PaginationDto } from "@/common/dto/pagination.dto";
 import { WorkService } from "./work.service";
 import { CreateWorkDto } from "./dto/create-work.dto";
 import { UpdateWorkDto } from "./dto/update-work.dto";
@@ -35,15 +35,11 @@ export class WorkController {
   }
 
   @Patch(":id")
-  update(
-    @Request() req,
-    @Param("id") id: string,
-    @Body() updateWorkDto: UpdateWorkDto
-  ) {
-    if (Object.keys(updateWorkDto).length === 0) {
+  update(@Request() req, @Param("id") id: string, @Body() dto: UpdateWorkDto) {
+    if (Object.keys(dto).length === 0) {
       throw new BadRequestException("至少需要提供一个有效字段");
     }
-    return this.worksService.update(req.user.id, +id, updateWorkDto);
+    return this.worksService.update(req.user.id, +id, dto);
   }
 
   @Delete(":id")
