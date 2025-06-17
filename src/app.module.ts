@@ -5,7 +5,7 @@ import { UserModule } from "@/user/user.module";
 import { AuthModule } from "@/auth/auth.module";
 import { WorkModule } from "@/work/work.module";
 import { RoleModule } from "@/role/role.module";
-import { PermissionModule } from './permission/permission.module';
+import { PermissionModule } from "@/permission/permission.module";
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { PermissionModule } from './permission/permission.module';
         port: configService.get<number>("MYSQL_PORT", 3306), // 端口号
         username: configService.get("ROOT_NAME", "root"), // 用户名
         password: configService.get("ROOT_PASSWORD", "root"), // 密码
-        database: configService.get("MYSQL_DATABASE", "nest-app"), //数据库名
+        database: configService.get("MYSQL_DATABASE", "v1_base"), //数据库名
         timezone: "+08:00", // 服务器上配置的时区
         synchronize: true, // 根据实体自动创建数据库表， 生产环境建议关闭
       }),

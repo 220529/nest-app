@@ -21,20 +21,27 @@ export class AuthService {
     if (oldUser?.password !== user.password) {
       throw new UnauthorizedException("Invalid username or password");
     }
-
-    const { id, username } = oldUser;
+    const { id, username, roles } = oldUser;
     return {
-      access_token: await this.jwtService.signAsync({ id, username }),
+      access_token: await this.jwtService.signAsync({
+        id,
+        username,
+        roleIds: roles.map((role) => role.id),
+      }),
     };
   }
 
   async signup(user: CreateUserDto): Promise<any> {
-    const oldUser = await this.usersService.findOne({
-      username: user.username,
-    });
-    if (oldUser) {
-      throw new ConflictException("User already exists!");
+    try {
+      const oldUser = await this.usersService.findOne({
+        username: user.username,
+      });
+      if (oldUser) {
+        throw new ConflictException("User already exists!");
+      }
+      return await this.usersService.create(user as CreateUserDto);
+    } catch (error) {
+      return error;
     }
-    return await this.usersService.create(user as CreateUserDto);
   }
 }

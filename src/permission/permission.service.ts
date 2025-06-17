@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { Repository, In } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+// import { Role } from "@/role/entities/role.entity";
 import { Permission } from "./entities/permission.entity";
 import { CreatePermissionDto } from "./dto/create-permission.dto";
 import { UpdatePermissionDto } from "./dto/update-permission.dto";
@@ -10,6 +11,8 @@ export class PermissionService {
   constructor(
     @InjectRepository(Permission)
     private readonly permissionRepo: Repository<Permission>
+    // @InjectRepository(Role)
+    // private roleRepository: Repository<Role>
   ) {}
 
   async create(dto: CreatePermissionDto) {
@@ -47,4 +50,17 @@ export class PermissionService {
   async remove(id: number) {
     await this.permissionRepo.delete(id);
   }
+
+  // async getPermissionsByRole(roleCode: string): Promise<string[]> {
+  //   const role = await this.roleRepository.findOne({
+  //     where: { code: roleCode },
+  //     relations: ["permissions", "permissions.permission"],
+  //   });
+
+  //   if (!role) {
+  //     return [];
+  //   }
+  //   console.log("getPermissionsByRole", role);
+  //   return [];
+  // }
 }

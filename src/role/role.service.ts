@@ -32,9 +32,9 @@ export class RoleService {
   }
 
   // 总是关联 permissions
-  async findOne(id: number) {
+  async findOne(params) {
     const role = await this.roleRepo.findOne({
-      where: { id },
+      where: { ...params },
       relations: ["permissions"],
     });
     if (!role) throw new NotFoundException("Role not found");

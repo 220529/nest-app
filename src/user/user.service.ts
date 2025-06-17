@@ -33,9 +33,13 @@ export class UserService {
       if (existingUser) {
         throw new ConflictException("Username already exists");
       }
+
+      const defaultRole = await this.roleService.findOne({ code: "user" });
+
       const user = this.userRepo.create({
         ...createUserDto,
         profile: {},
+        roles: defaultRole ? [defaultRole] : [], // 关联默认角色
       });
       return await this.userRepo.save(user);
     } catch (error) {
