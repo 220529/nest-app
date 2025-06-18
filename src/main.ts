@@ -14,7 +14,12 @@ async function bootstrap() {
     new TransformInterceptor()
   );
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe()); // 添加这行
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // 关键配置！启用自动转换
+      whitelist: true,
+    })
+  ); // 添加这行
   app.setGlobalPrefix("api");
   // 设置swagger文档
   const config = new DocumentBuilder()

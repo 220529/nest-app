@@ -35,7 +35,6 @@ export class WorkService {
     if (existingWork) {
       throw new ConflictException("该作品名称已被使用");
     }
-
     // 3. 创建作品
     const work = this.workRepo.create({
       ...createWorkDto,
