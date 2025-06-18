@@ -6,6 +6,7 @@ import { AuthModule } from "@/auth/auth.module";
 import { WorkModule } from "@/work/work.module";
 import { RoleModule } from "@/role/role.module";
 import { PermissionModule } from "@/permission/permission.module";
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { PermissionModule } from "@/permission/permission.module";
     WorkModule,
     RoleModule,
     PermissionModule,
+    CaslModule,
   ],
 })
 export class AppModule {}

@@ -10,13 +10,16 @@ import { UserService } from "@/user/user.service";
 import { Work } from "@/work/entities/work.entity";
 import { CreateWorkDto } from "./dto/create-work.dto";
 import { UpdateWorkDto } from "./dto/update-work.dto";
+import { Action } from "@/enums/action.enum";
+import { CaslAbilityFactory } from "@/casl/casl-ability.factory";
 
 @Injectable()
 export class WorkService {
   constructor(
     @InjectRepository(Work)
     private readonly workRepo: Repository<Work>,
-    private userService: UserService
+    private userService: UserService,
+    private caslAbilityFactory: CaslAbilityFactory
   ) {}
 
   async create(userId: number, createWorkDto: CreateWorkDto) {
@@ -24,6 +27,11 @@ export class WorkService {
     const user = await this.userService.findOne({ id: userId });
     if (!user) throw new NotFoundException("用户不存在");
 
+    const ability = this.caslAbilityFactory.createForUser(user);
+    if (ability.can(Action.Read, "all")) {
+      // "user" has read access to everything
+      console.log("user has read access to everything");
+    }
     // 2. 防重名检查（同用户下不允许重复作品名）
     const existingWork = await this.workRepo.findOne({
       where: {

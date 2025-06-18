@@ -4,9 +4,10 @@ import { UserModule } from "@/user/user.module";
 import { Work } from "./entities/work.entity";
 import { WorkService } from "./work.service";
 import { WorkController } from "./work.controller";
+import { CaslModule } from "@/casl/casl.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Work]), UserModule],
+  imports: [TypeOrmModule.forFeature([Work]), UserModule, CaslModule],
   controllers: [WorkController],
   providers: [WorkService],
 })
