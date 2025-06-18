@@ -9,17 +9,23 @@ import {
   Query,
   Request,
   BadRequestException,
+  UseGuards,
 } from "@nestjs/common";
 import { PaginationDto } from "@/common/dto/pagination.dto";
 import { WorkService } from "./work.service";
 import { CreateWorkDto } from "./dto/create-work.dto";
 import { UpdateWorkDto } from "./dto/update-work.dto";
+import { Role } from "../enums/role.enum";
+import { Roles } from "../decorators/roles.decorator";
+import { RolesGuard } from "@/guards/roles.guard";
 
 @Controller("work")
+@UseGuards(RolesGuard)
 export class WorkController {
   constructor(private readonly worksService: WorkService) {}
 
   @Post()
+  @Roles(Role.Admin)
   create(@Request() req, @Body() createWorkDto: CreateWorkDto) {
     return this.worksService.create(req.user.id, createWorkDto);
   }
