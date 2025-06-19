@@ -7,31 +7,25 @@ import {
   InferSubjects,
 } from "@casl/ability";
 import { Action } from "@/enums/action.enum";
-import { User } from "@/user/entities/user.entity";
 import { Work } from "@/work/entities/work.entity";
+import { User } from "@/user/entities/user.entity";
 
-type Subjects = InferSubjects<typeof Work | typeof User> | "all";
-
+// 1. 定义类型
+export type Subjects = InferSubjects<typeof Work | typeof User> | "all";
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
 @Injectable()
 export class CaslAbilityFactory {
-  createForUser(user: User) {
-    const { can, cannot, build } = new AbilityBuilder(createMongoAbility);
-
-    console.log("user.isAdmin: ", user);
-
-    // if (user.isAdmin) {
-    //   can(Action.Manage, "all"); // 管理员有所有权限
-    // } else {
-    //   can(Action.Read, "all"); // 普通用户有读取权限
-    // }
-
-    // 用户可以更新自己的文章
-    can(Action.Update, Work, { userId: user.id });
-
-    // 不能删除已发布的文章
-    // cannot(Action.Delete, Work, { status: true });
+  createForUser(user: { id: number; roleIds: number[] }) {
+    const { can, cannot, build } = new AbilityBuilder<AppAbility>(
+      createMongoAbility
+    );
+    if (user.roleIds.includes(3)) {
+      can(Action.Manage, "all");
+    } else {
+      can(Action.Update, Work, ["title", "content"], { userId: user.id });
+      can(Action.Delete, Work, { userId: user.id });
+    }
 
     return build({
       detectSubjectType: (item) =>

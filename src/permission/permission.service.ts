@@ -51,16 +51,14 @@ export class PermissionService {
     await this.permissionRepo.delete(id);
   }
 
-  // async getPermissionsByRole(roleCode: string): Promise<string[]> {
-  //   const role = await this.roleRepository.findOne({
-  //     where: { code: roleCode },
-  //     relations: ["permissions", "permissions.permission"],
-  //   });
-
-  //   if (!role) {
-  //     return [];
-  //   }
-  //   console.log("getPermissionsByRole", role);
-  //   return [];
-  // }
+  async findPermissionsByRoleIds(roleIds: number[]): Promise<Permission[]> {
+    return this.permissionRepo.find({
+      relations: ["roles"],
+      where: {
+        roles: {
+          id: In(roleIds),
+        },
+      },
+    });
+  }
 }

@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    // console.log("auth guard canActivate");
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -37,12 +38,8 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get<string>("SECRET"),
       });
-      console.log("auth guard payload: ", payload);
-      // 💡 在这里我们将 payload 挂载到请求对象上
-      // 以便我们可以在路由处理器中访问它
+      // console.log("auth guard payload: ", payload);
       request["user"] = payload;
-      // const { user } = context.switchToHttp().getRequest();
-      // console.log("auth guard user: ", user);
     } catch {
       throw new UnauthorizedException();
     }

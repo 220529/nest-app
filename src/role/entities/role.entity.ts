@@ -13,7 +13,7 @@ export class Role extends BaseEntity {
   @Column({ type: "text", nullable: true })
   description: string;
 
-  @ManyToMany(() => Permission)
+  @ManyToMany(() => Permission, (permission) => permission.roles) // 添加反向引用
   @JoinTable({
     name: "role_permissions",
     joinColumn: { name: "role_id", referencedColumnName: "id" },

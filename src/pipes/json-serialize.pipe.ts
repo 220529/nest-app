@@ -8,7 +8,6 @@ export class JsonSerializePipe implements PipeTransform {
    * @returns 原始字符串或序列化后的JSON字符串
    */
   transform(value: unknown): string {
-    console.log("JsonSerializePipe", value);
     // 已经是字符串则直接返回
     if (typeof value === "string") return value;
 

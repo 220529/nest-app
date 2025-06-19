@@ -8,6 +8,8 @@ import { AuthController } from "@/auth/auth.controller";
 import { AuthService } from "@/auth/auth.service";
 import { UserModule } from "@/user/user.module";
 import { AuthGuard } from "@/guards/auth.guard";
+import { CaslGuard } from "@/guards/casl.guard";
+import { CaslModule } from "@/casl/casl.module";
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { AuthGuard } from "@/guards/auth.guard";
       }),
       inject: [ConfigService],
     }),
+    CaslModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -34,6 +37,10 @@ import { AuthGuard } from "@/guards/auth.guard";
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: CaslGuard,
     },
   ],
   exports: [AuthService],

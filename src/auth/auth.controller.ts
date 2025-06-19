@@ -1,13 +1,4 @@
-import {
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Get,
-  Post,
-  Body,
-  Request,
-  UseGuards,
-} from "@nestjs/common";
+import { Controller, HttpCode, HttpStatus, Post, Body } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { CreateUserDto } from "@/user/dto/create-user.dto";
@@ -31,6 +22,7 @@ export class AuthController {
   @Public()
   @Post("signup")
   signup(@Body() user: CreateUserDto) {
+    console.log("signup.user...:", user);
     return this.authService.signup(user);
   }
 }
