@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mysql:8.4.3 # 使用稳定版本的 MySQL
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # MySQL 根用户密码
+      MYSQL_DATABASE: ${MYSQL_DATABASE} # 默认数据库名
+    volumes:
+      - nest_db:/var/lib/mysql # 持久化 MySQL 数据
+      - ./init-scripts:/docker-entrypoint-initdb.d # 初始化 SQL 文件路径（可选）
+    ports:
+      - 3309:3306 # 映射 MySQL 默认端口（可选，方便调试）
+    networks:
+      - nest_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 # 最大重启次数
+  nest:
+    image: registry.cn-beijing.aliyuncs.com/kaixinliu/nest-app:{{IMAGE_TAG}}
+    depends_on:
+      - db
+    ports:
+      - 3055:${NEST_PORT}
+    networks:
+      - lego-network
+volumes:
+  nest_db: # 定义持久化卷
+
+networks:
+  nest_network: # 定义网络
+

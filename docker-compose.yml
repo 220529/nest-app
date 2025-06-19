@@ -3,13 +3,13 @@ services:
     image: mysql:8.4.3 # 使用稳定版本的 MySQL
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # MySQL 根用户密码
-      MYSQL_DATABASE: ${MYSQL_DATABASE} # 默认数据库名
+      MYSQL_ROOT_PASSWORD: root # MySQL 根用户密码
+      MYSQL_DATABASE: v1_base # 默认数据库名
     volumes:
       - nest_db:/var/lib/mysql # 持久化 MySQL 数据
       - ./init-scripts:/docker-entrypoint-initdb.d # 初始化 SQL 文件路径（可选）
     ports:
-      - 3306:3306 # 映射 MySQL 默认端口（可选，方便调试）
+      - 3309:3306 # 映射 MySQL 默认端口（可选，方便调试）
     networks:
       - nest_network
     healthcheck:

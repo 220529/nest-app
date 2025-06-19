@@ -24,7 +24,7 @@ import { CaslModule } from "@/casl/casl.module";
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         global: true,
-        secret: configService.get<string>("NEST_SECRET"),
+        secret: configService.get<string>("JWT_SECRET"),
         signOptions: { expiresIn: "7d" },
       }),
       inject: [ConfigService],
