@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne, JoinColumn, RelationId } from "typeorm";
 import { BaseEntity } from "@/common/entities/base.entity";
 import { User } from "@/user/entities/user.entity";
-import { WorkStatus } from "@/enums/work.enum";
+import { WorkStatus } from "@/common/enums/work.enum";
 
 @Entity()
 export class Work extends BaseEntity {

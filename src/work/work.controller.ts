@@ -11,12 +11,15 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { PaginationDto } from "@/common/dto/pagination.dto";
-import { WorkService } from "./work.service";
-import { CreateWorkDto } from "./dto/create-work.dto";
-import { UpdateWorkDto } from "./dto/update-work.dto";
+import { WorkService } from "@/work/work.service";
+import { CreateWorkDto } from "@/work/dto/create-work.dto";
+import { UpdateWorkDto } from "@/work/dto/update-work.dto";
 import { Work } from "@/work/entities/work.entity";
-import { Action } from "@/enums/action.enum";
-import { CaslSubject, CaslAction } from "@/decorators/casl-subject.decorator";
+import { Action } from "@/common/enums/action.enum";
+import {
+  CaslSubject,
+  CaslAction,
+} from "@/common/decorators/casl-subject.decorator";
 
 @Controller("work")
 @CaslSubject(Work)

@@ -1,6 +1,6 @@
 import { Entity, Column, OneToOne, JoinColumn } from "typeorm";
 import { BaseEntity } from "@/common/entities/base.entity";
-import { User } from "./user.entity";
+import { User } from "@/user/entities/user.entity";
 
 @Entity()
 export class Profile extends BaseEntity {

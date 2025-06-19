@@ -6,7 +6,7 @@ import {
   ExtractSubjectType,
   InferSubjects,
 } from "@casl/ability";
-import { Action } from "@/enums/action.enum";
+import { Action } from "@/common/enums/action.enum";
 import { Work } from "@/work/entities/work.entity";
 import { User } from "@/user/entities/user.entity";
 

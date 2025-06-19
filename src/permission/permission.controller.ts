@@ -9,9 +9,9 @@ import {
   Delete,
   BadRequestException,
 } from "@nestjs/common";
-import { PermissionService } from "./permission.service";
-import { CreatePermissionDto } from "./dto/create-permission.dto";
-import { UpdatePermissionDto } from "./dto/update-permission.dto";
+import { PermissionService } from "@/permission/permission.service";
+import { CreatePermissionDto } from "@/permission/dto/create-permission.dto";
+import { UpdatePermissionDto } from "@/permission/dto/update-permission.dto";
 
 @Controller("permission")
 export class PermissionController {

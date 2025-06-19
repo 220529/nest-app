@@ -1,5 +1,5 @@
 import { CaslAbilityFactory } from "@/casl/casl-ability.factory";
-import { Action } from "@/enums/action.enum";
+import { Action } from "@/common/enums/action.enum";
 import { Work } from "@/work/entities/work.entity"; // 导入Work实体
 
 describe("CaslAbilityFactory", () => {

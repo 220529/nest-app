@@ -7,8 +7,8 @@ import { PassportModule } from "@nestjs/passport";
 import { AuthController } from "@/auth/auth.controller";
 import { AuthService } from "@/auth/auth.service";
 import { UserModule } from "@/user/user.module";
-import { AuthGuard } from "@/guards/auth.guard";
-import { CaslGuard } from "@/guards/casl.guard";
+import { AuthGuard } from "@/common/guards/auth.guard";
+import { CaslGuard } from "@/common/guards/casl.guard";
 import { CaslModule } from "@/casl/casl.module";
 
 @Module({

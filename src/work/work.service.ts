@@ -8,8 +8,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { PaginationDto } from "@/common/dto/pagination.dto";
 import { UserService } from "@/user/user.service";
 import { Work } from "@/work/entities/work.entity";
-import { CreateWorkDto } from "./dto/create-work.dto";
-import { UpdateWorkDto } from "./dto/update-work.dto";
+import { CreateWorkDto } from "@/work/dto/create-work.dto";
+import { UpdateWorkDto } from "@/work/dto/update-work.dto";
 
 @Injectable()
 export class WorkService {

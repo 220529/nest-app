@@ -2,11 +2,13 @@ import { NestFactory, Reflector } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
 import { AppModule } from "@/app.module";
-import { LoggingInterceptor } from "@/interceptors/logging.interceptor";
-import { TransformInterceptor } from "@/interceptors/transform.interceptor";
-import { HttpExceptionFilter } from "@/filters/http-exception.filter";
+import { ConfigService } from "@nestjs/config";
+import { LoggingInterceptor } from "@/common/interceptors/logging.interceptor";
+import { TransformInterceptor } from "@/common/interceptors/transform.interceptor";
+import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
 
 async function bootstrap() {
+  console.log("Nest application started", process.env.NODE_ENV);
   const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector)),
@@ -31,6 +33,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  const configService = app.get(ConfigService);
+  await app.listen(configService.get<number>("NEST_PORT") || 3000);
+  console.log(`nest-app is running on: ${await app.getUrl()}`);
 }
 bootstrap();

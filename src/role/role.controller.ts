@@ -8,9 +8,9 @@ import {
   Delete,
 } from "@nestjs/common";
 import { RoleService } from "./role.service";
-import { CreateRoleDto } from "./dto/create-role.dto";
-import { UpdateRoleDto } from "./dto/update-role.dto";
-import { AssignPermissionsDto } from "./dto/assign-permissions.dto";
+import { CreateRoleDto } from "@/role/dto/create-role.dto";
+import { UpdateRoleDto } from "@/role/dto/update-role.dto";
+import { AssignPermissionsDto } from "@/role/dto/assign-permissions.dto";
 
 @Controller("role")
 export class RoleController {

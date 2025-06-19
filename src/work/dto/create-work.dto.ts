@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer";
 import { IsNotEmpty, IsString } from "class-validator";
-import { JsonSerializePipe } from "@/pipes/json-serialize.pipe";
+import { JsonSerializePipe } from "@/common/pipes/json-serialize.pipe";
 
 export class CreateWorkDto {
   @IsNotEmpty()

@@ -7,8 +7,11 @@ import {
 import { Reflector } from "@nestjs/core";
 import { permittedFieldsOf } from "@casl/ability/extra";
 import { CaslAbilityFactory } from "@/casl/casl-ability.factory";
-import { IS_PUBLIC_KEY } from "@/decorators/public.decorator";
-import { CASL_SUBJECT, CASL_ACTION } from "@/decorators/casl-subject.decorator";
+import { IS_PUBLIC_KEY } from "@/common/decorators/public.decorator";
+import {
+  CASL_SUBJECT,
+  CASL_ACTION,
+} from "@/common/decorators/casl-subject.decorator";
 
 @Injectable()
 export class CaslGuard implements CanActivate {

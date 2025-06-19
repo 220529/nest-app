@@ -8,7 +8,7 @@ import {
   JoinTable,
 } from "typeorm";
 import { BaseEntity } from "@/common/entities/base.entity";
-import { Profile } from "./profile.entity";
+import { Profile } from "@/user/entities/profile.entity";
 import { Work } from "@/work/entities/work.entity";
 import { Role } from "@/role/entities/role.entity";
 

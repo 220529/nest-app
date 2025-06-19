@@ -15,7 +15,7 @@ import { PaginationDto } from "@/common/dto/pagination.dto";
 import { CreateUserDto } from "@/user/dto/create-user.dto";
 import { UpdateUserDto } from "@/user/dto/update-user.dto";
 import { UpdateProfileDto } from "@/user/dto/update-profile.dto";
-import { AssignRolesDto } from "./dto/assign-roles.dto";
+import { AssignRolesDto } from "@/user/dto/assign-roles.dto";
 
 @Controller("user")
 export class UserController {
