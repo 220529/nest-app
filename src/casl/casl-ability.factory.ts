@@ -20,6 +20,7 @@ export class CaslAbilityFactory {
     const { can, cannot, build } = new AbilityBuilder<AppAbility>(
       createMongoAbility
     );
+    // console.log("caslAbilityFactory createForUser", user.roleIds);
     if (user.roleIds.includes(3)) {
       can(Action.Manage, "all");
     } else {

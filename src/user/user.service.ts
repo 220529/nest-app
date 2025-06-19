@@ -35,9 +35,8 @@ export class UserService {
       }
 
       const defaultRole = await this.roleService.findOne({
-        code: "user",
+        code: createUserDto.code || "user",
       });
-      console.log("defaultRole", defaultRole);
 
       const user = this.userRepo.create({
         ...createUserDto,

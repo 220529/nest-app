@@ -4,6 +4,7 @@ import {
   MinLength,
   MaxLength,
   Matches,
+  IsOptional,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -12,7 +13,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
-  @MaxLength(8)
+  @MaxLength(10)
   @Matches(/^[a-zA-Z0-9_]+$/, {
     message: "Username can only contain letters, numbers and underscores",
   })
@@ -20,6 +21,9 @@ export class CreateUserDto {
 
   @ApiProperty({ example: "password", description: "Password" })
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(5)
   password: string;
+
+  @IsOptional()
+  code: string;
 }
