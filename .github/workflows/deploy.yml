@@ -33,6 +33,7 @@ jobs:
           echo MYSQL_ROOT_NAME=${{secrets.MYSQL_ROOT_NAME}} >> .env
           echo MYSQL_ROOT_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}} >> .env
           echo JWT_SECRET=${{secrets.JWT_SECRET}} >> .env
+          echo NEST_PORT=${{secrets.NEST_PORT}} >> .env
 
           echo OSS_BUCKET=${{secrets.OSS_BUCKET}} >> .env
           echo OSS_REGION=${{secrets.OSS_REGION}} >> .env
