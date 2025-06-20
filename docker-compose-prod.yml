@@ -29,7 +29,7 @@ services:
     ports:
       - 3055:${NEST_PORT}
     networks:
-      - lego-network
+      - nest_network
 volumes:
   nest_db: # 定义持久化卷
 
