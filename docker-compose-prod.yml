@@ -11,7 +11,7 @@ services:
       - nest_db:/var/lib/mysql # 持久化 MySQL 数据
       - ./init-scripts:/docker-entrypoint-initdb.d # 初始化 SQL 文件路径（可选）
     ports:
-      - 3309:3306 # 映射 MySQL 默认端口（可选，方便调试）
+      - 3306:3306 # 映射 MySQL 默认端口（可选，方便调试）
     networks:
       - nest_network
     healthcheck:
