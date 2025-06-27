@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, Logger } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserModule } from "@/user/user.module";
@@ -7,6 +7,13 @@ import { WorkModule } from "@/work/work.module";
 import { RoleModule } from "@/role/role.module";
 import { PermissionModule } from "@/permission/permission.module";
 import { CaslModule } from "@/casl/casl.module";
+import { readdirSync } from "fs";
+import { webcrypto } from "node:crypto";
+
+// 将 Web Crypto API 挂载到 globalThis
+if (!globalThis.crypto) {
+  globalThis.crypto = webcrypto as unknown as Crypto;
+}
 
 @Module({
   imports: [
@@ -17,17 +24,32 @@ import { CaslModule } from "@/casl/casl.module";
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: "mysql", // 数据库类型
-        entities: [__dirname + "/**/*.entity{.ts,.js}"], // 数据表实体
-        host: configService.get("MYSQL_HOST", "localhost"), // 主机，默认为localhost
-        port: configService.get<number>("MYSQL_PORT", 3306), // 端口号
-        username: configService.get("MYSQL_ROOT_NAME", "root"), // 用户名
-        password: configService.get("MYSQL_ROOT_PASSWORD", "root"), // 密码
-        database: configService.get("MYSQL_DATABASE", "v1_base"), //数据库名
-        timezone: "+08:00", // 服务器上配置的时区
-        synchronize: true, // 根据实体自动创建数据库表， 生产环境建议关闭
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const logger = new Logger("TypeORMConfig");
+
+        // 打印当前目录文件
+        const currentDir = process.cwd();
+        const files = readdirSync(currentDir);
+        logger.log(`当前目录文件: ${files.join(", ")}`);
+
+        // 打印数据库配置
+        const dbConfig = {
+          host: configService.get("MYSQL_HOST", "localhost"),
+          port: configService.get<number>("MYSQL_PORT", 3306),
+          username: configService.get("MYSQL_ROOT_NAME", "root"),
+          database: configService.get("MYSQL_DATABASE", "v1_base"),
+        };
+        logger.log(`数据库配置: ${JSON.stringify(dbConfig)}`);
+
+        return {
+          type: "mysql",
+          entities: [__dirname + "/**/*.entity{.ts,.js}"],
+          ...dbConfig,
+          password: configService.get("MYSQL_ROOT_PASSWORD", "root"), // 单独处理密码
+          timezone: "+08:00",
+          synchronize: true,
+        };
+      },
     }),
     UserModule,
     AuthModule,

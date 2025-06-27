@@ -1,0 +1,24 @@
+# 忽略 node_modules（依赖应在镜像内安装）
+node_modules/
+
+# 忽略构建输出目录（镜像会自己构建）
+dist/
+
+# 忽略日志文件
+*.log
+
+# 忽略环境变量文件
+.env
+.env.local
+
+# 忽略 Git 相关文件
+.git/
+.gitignore
+
+# 忽略 IDE 配置文件
+.vscode/
+.idea/
+
+# 忽略 Docker 自身文件（可选）
+Dockerfile
+docker-compose.yml
