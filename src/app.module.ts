@@ -28,9 +28,9 @@ if (!globalThis.crypto) {
         const logger = new Logger("TypeORMConfig");
 
         // 打印当前目录文件
-        const currentDir = process.cwd();
-        const files = readdirSync(currentDir);
-        logger.log(`当前目录文件: ${files.join(", ")}`);
+        const files = readdirSync(process.cwd());
+        logger.log("当前目录文件:");
+        logger.log(files.map((f) => `• ${f}`).join("\n"));
 
         // 打印数据库配置
         const dbConfig = {
@@ -39,7 +39,7 @@ if (!globalThis.crypto) {
           username: configService.get("MYSQL_ROOT_NAME", "root"),
           database: configService.get("MYSQL_DATABASE", "v1_base"),
         };
-        logger.log(`数据库配置: ${JSON.stringify(dbConfig)}`);
+        console.table(dbConfig);
 
         return {
           type: "mysql",

@@ -8,7 +8,7 @@ import { TransformInterceptor } from "@/common/interceptors/transform.intercepto
 import { HttpExceptionFilter } from "@/common/filters/http-exception.filter";
 
 async function bootstrap() {
-  console.log("Nest application started", process.env.NODE_ENV);
+  console.log("Nest process.env.NODE_ENV", process.env.NODE_ENV);
   const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector)),
