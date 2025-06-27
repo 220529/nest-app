@@ -39,6 +39,7 @@ jobs:
           echo OSS_REGION=${{secrets.OSS_REGION}} >> .env
           echo ACCESS_KEY_ID=${{secrets.ACCESS_KEY_ID}} >> .env
           echo ACCESS_KEY_SECRET=${{secrets.ACCESS_KEY_SECRET}} >> .env
+          echo NODE_ENV=production >> .env
 
       - name: Login to ACR
         uses: aliyun/acr-login@v1
